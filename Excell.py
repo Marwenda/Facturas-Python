@@ -1,3 +1,8 @@
+#Marwenda version 1.00
+#Facturas de Listado a modelo, NO se adjunta en el repositorio ningun tipo de informacion sensible
+#Variables autoexplicativas(la mayoria)
+
+
 #Creamos una execpcion por si falla la apertura de la libreria.
 try:
     from openpyxl.utils.cell import get_column_letter
@@ -25,9 +30,10 @@ def Printarventa(NumeroFila):
     Nombre = str(ws['E' + NumeroFila].value)+" "+str(ws['F' + NumeroFila].value)
     Descripcion= str(ws['G' + NumeroFila].value)
 
+#Abrimos el libro del modelo de factura, y escogemos la hoja de factura simplificada
     Wbmod = load_workbook('modelo.xlsx')
     WSmod = Wbmod['Factura Simpli']
-
+#Rellenamos los valores que nos interesan del registro.
     WSmod['D5'].value = Fecha
     WSmod['D7'].value = NumFact
     WSmod['A11'].value = Nombre
@@ -37,35 +43,28 @@ def Printarventa(NumeroFila):
     #Cambiamos el . por la , para que excell pueda trabajar con el numero
     WSmod['D17'].value = Euros.replace('.' , ',')
 
-    #Comprobamos que el IVA sea distinto a 0
+    #Comprobamos que el IVA sea distinto a 0, si no por defecto es 21%
     if(IVA == '0.0' ):
             WSmod['E23'].value = '0'
   
+#Guardamos cada factura con su propio libro para subirlo a Drive o transformarlo en PDF a posteriori.
 
     Wbmod.save('Facturas/'+str(NumFact) + '.xlsx')
 
-    print( 
-        # WSmod['D5'].value +
-    #WSmod['D7'].value +
-    #WSmod['A11'].value +
-    #WSmod['A12'].value +
-    #WSmod['A13'].value +
-    #WSmod['A17'].value +
-    #WSmod['D17'].value +
-    #str(WSmod['E23'].value)
-
-
-
-       # ("Factura numero " + NumFact + " Fecha de Factura " + Fecha  
+    # print( # ("Factura numero " + NumFact + " Fecha de Factura " + Fecha  
        # + " Cantidad pagada "  + Euros + " Euros " + "Nombre cliente "+ Nombre + " del pais "+ Pais +
-        # " buscado por la Ip "+ Ip + " Se le grava un IVA de " + IVA + " Compro el video "+ Descripcion)
-        )
+        # " buscado por la Ip "+ Ip + " Se le grava un IVA de " + IVA + " Compro el video "+ Descripcion))
 
 
 
 
 
 #Para recorrer todo el archivo sacando la informacion que necesitamos.
+#Usamos el rango de 2,122 para sacar las primeras 121 Facturas simplificadas.
+#Funciona perfectamente.
 
 for i in range(2,122):
     Printarventa(str(i))
+
+#TODO Necesitamos interfaz grafica, y un panel de opciones para configurar tanto la celda que queramos para obtener
+# los datos como para que celda rellenar de forma sencilla.    
