@@ -16,8 +16,6 @@ wb = load_workbook('registro.xlsx')
 #Inicializamos solo la hoja del libro que nos interesa
 ws = wb['Facturas simpli']
 
-
-
 #Creamos una funcion para que solo pasandole un numero me de los valores que esperamos de la venta
 def Printarventa(NumeroFila):
    #Guardamos todos los valores que nos interesan en variables que usaremos despues.
@@ -63,8 +61,9 @@ def Printarventa(NumeroFila):
 #Usamos el rango de 2,122 para sacar las primeras 121 Facturas simplificadas.
 #Funciona perfectamente.
 
-for i in range(2,122):
+for i in range(226,227): # ACUERDATE de poner un numero mas de la fila ultima del registro.
     Printarventa(str(i))
+
 
 #TODO Necesitamos interfaz grafica, y un panel de opciones para configurar tanto la celda que queramos para obtener
 # los datos como para que celda rellenar de forma sencilla.    
